@@ -1,3 +1,21 @@
+// Important: add templates from all imports recursively to main document
+function addTemplates(doc) {
+  var link = doc.querySelectorAll('link[rel=import]');
+  for (var i = 0; i < link.length; ++i)
+  {
+    if ( link[i].import ) {
+      addTemplates(link[i].import);
+      var contentArr = link[i].import.querySelectorAll('template');
+      for (var ii = 0; ii < contentArr.length; ++ii) {
+        document.body.appendChild(document.importNode(contentArr[ii], true));
+      }
+    }
+  }
+}
+addTemplates(document);
+//
+
+
 function hilightSessions() {
   var tim = document.getElementById("numSessions");
   if ( tim ) {
@@ -108,15 +126,6 @@ function ViewModel() {
   };
 }
 
-var model = new ViewModel();
-ko.punches.enableAll();
-ko.applyBindings(model);
-
-$(window).on('hashchange', function () {
-  console.log("change site:" + window.location.hash.substring(1));
-  model.currentView(window.location.hash.substring(1)); // bind url hash to template name
-});
-
 // called after a view got displayed
 function initView() {
   if (window.location.hash == '#about') {
@@ -124,3 +133,15 @@ function initView() {
   }
 }
 
+// important: in order to make import shim work, put your init into document ready, as
+// index.html tagged markup will be loaded AFTER processing imports (so early init of KO)
+$('document').ready(function(){
+  var model = new ViewModel();
+  ko.punches.enableAll();
+  ko.applyBindings(model);
+
+  $(window).on('hashchange', function () {
+    console.log("change site:" + window.location.hash.substring(1));
+    model.currentView(window.location.hash.substring(1)); // bind url hash to template name
+  });
+});

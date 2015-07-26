@@ -36,6 +36,8 @@ public class KOHttpAppMain {
                     "./weblib"
                 )
                 .allDev(true)
+//                .minify(false) // in case of debugging import shim
+                .cacheAggregates(false)
                 .build()
             .httpAPI("/api", app)
                 .serType(SerializerType.JsonNoRef)

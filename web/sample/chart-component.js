@@ -1,4 +1,3 @@
-
 function ChartModel(params,element) {
   var self = this;
 
