@@ -18,7 +18,7 @@ public class KOHttpAppMain {
 
     public static void main(String[] args) throws IOException {
         // just setup stuff manually here. Its easy to build an application specific
-        // config using e.g. json or kson.
+        // config using e.g. json or kson. (see github kontrakor-polymer-example)
         File root = new File("./web");
 
         if ( ! new File(root,"index.html").exists() ) {
@@ -37,7 +37,7 @@ public class KOHttpAppMain {
                 )
                 .allDev(true)
 //                .minify(false) // in case of debugging import shim
-                .cacheAggregates(false)
+                .cacheAggregates(false) // for debugging, set to true in production
                 .build()
             .httpAPI("/api", app)
                 .serType(SerializerType.JsonNoRef)
